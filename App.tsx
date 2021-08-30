@@ -12,6 +12,7 @@ import { Register } from '~/screens/Register';
 import { CategorySelect } from '~/screens/CategorySelect';
 import { AppRoutes } from '~/routes/app.routes';
 import { StatusBar } from 'react-native';
+import { AuthProvider } from '~/hooks';
 
 export default function App() {
 
@@ -29,7 +30,9 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <NavigationContainer>
         <StatusBar barStyle='light-content' />
-      <AppRoutes />
+        <AuthProvider>
+           <AppRoutes />
+        </AuthProvider>
       </NavigationContainer>
     </ThemeProvider>
   );
