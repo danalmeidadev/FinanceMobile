@@ -4,6 +4,7 @@
   "expo": {
     "name": "finance",
     "slug": "finance",
+    "scheme": "finance",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
