@@ -22,6 +22,7 @@ import {
 } from './styles';
 import { ActivityIndicatorLoading } from '~/components/Loading';
 import { dataKey } from '~/utils/dataKey';
+import { useAuth } from '~/hooks';
 
 export interface DataListProps extends TransactionsCardsProps {
   id: string;
@@ -39,6 +40,7 @@ interface CardsData {
 }
 
 export function Dashboard(){
+  const {signOut, user} = useAuth();
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [cardsTotal, setCardsTotal] = useState<CardsData>({} as CardsData);
   const [loading, setLoading] = useState(true);
@@ -54,11 +56,14 @@ export function Dashboard(){
       })}`
   }, []);
 
-  const loadTransactions = useCallback(async() => {
+  const loadTransactions = async() => {
     const response = await AsyncStorage.getItem(dataKey.key);
     const transactions = response ? JSON.parse(response) : [];
     let incomeTotal = 0;
     let expenseTotal = 0;
+    if(transactions === null){
+
+    }
     const transactionsFormated: DataListProps[] = transactions.map((item: DataListProps) => {
 
       if(item.type === 'positive'){
@@ -116,7 +121,7 @@ export function Dashboard(){
       }
     });
     setLoading(false);
-  }, [])
+  }
 
   useFocusEffect(useCallback(() => {
     loadTransactions();
@@ -129,16 +134,16 @@ export function Dashboard(){
         <>
         <Header>
         <UserWrapper>
-          <UserInfo>
-              <Photo source={Images.Perfil} />
-              <User>
-                <UserWelcone>Olá,</UserWelcone>
-                <UserName>Dan Almeida</UserName>
-              </User>
-            </UserInfo>
-            <LogoutButton onPress={() => {}}>
-              <Icone name='power' />
-            </LogoutButton>
+        <UserInfo>
+        <Photo source={{uri: user.photo}} />                         
+          <User>
+            <UserWelcone>Olá,</UserWelcone>
+            <UserName>{user.name}</UserName>
+          </User>
+          </UserInfo>
+          <LogoutButton onPress={signOut}>
+            <Icone name='power' />
+          </LogoutButton>
         </UserWrapper>
         </Header>
         <CardsWrappper>

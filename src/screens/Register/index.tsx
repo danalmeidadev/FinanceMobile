@@ -71,10 +71,7 @@ export function Register(){
     try {
       const data = await AsyncStorage.getItem(dataKey.key);
       const currentData = data ? JSON.parse(data) : [];
-      const dataFormated = [
-        ...currentData,
-        newTransaction,
-      ]
+      const dataFormated = [...currentData, newTransaction]
       await AsyncStorage.setItem(dataKey.key, JSON.stringify(dataFormated));
       reset();
       setTransactionType('');
@@ -87,7 +84,7 @@ export function Register(){
       navigate('Listagem');
       
     } catch (error) {
-      console.log(error)
+      console.log('errorListagem', error)
       Alert.alert('Oops!, Error ao cadastrar!')
     }
 

@@ -55,16 +55,6 @@ export function AppRoutes(){
             ))
           }} 
       />
-      <Screen name='SignIn' component={SignIn}
-           options={{
-            tabBarIcon: (({ size, color}) => (
-              <MaterialIcons 
-              name='pie-chart'
-              size={size}
-              color={color} />
-            ))
-          }} 
-      />
     </Navigator>
   );
 }
