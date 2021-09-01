@@ -47,7 +47,7 @@ export function Dashboard(){
 
   const getLastTransaction = useCallback((collection: DataListProps[], type: 'positive' | 'negative') => {
 
-    const collectionsFilttered = transactions.filter((transaction) =>  transaction.type === type);
+    const collectionsFilttered = collection.filter((transaction) =>  transaction.type === type);
     if(collectionsFilttered.length === 0){
       return 0;
     }
