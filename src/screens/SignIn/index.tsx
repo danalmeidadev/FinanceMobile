@@ -80,7 +80,7 @@ export function SignIn(){
             title='Entrar com Google'
             svg={Images.Google}
             onPress={handleSignInWithGoogle}
-            loading={loading}
+            loading={loadingGoogle}
             />
         )}       
         </FootWrapper>
