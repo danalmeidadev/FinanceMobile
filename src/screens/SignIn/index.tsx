@@ -19,8 +19,8 @@ export function SignIn(){
   const [loading, setLoading] = useState(false);
 
   const handleSignInWithGoogle = async() => {
+    setLoading(true);
     try {
-      setLoading(true);
       await signInWithGoogle();
     } catch (error) {
       setLoading(false);
@@ -28,8 +28,8 @@ export function SignIn(){
       console.log(error);
     }
     setLoading(false);
-
   }
+  
   const handleSignInWithApple = async() => {
     try {
       setLoading(true);

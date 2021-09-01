@@ -47,17 +47,19 @@ export function Dashboard(){
 
   const getLastTransaction = useCallback((collection: DataListProps[], type: 'positive' | 'negative') => {
 
-    const lastTransaction = new Date(Math.max.apply(Math, collection      
-      .filter((transaction) =>  transaction.type === type)
-      .map((transaction) => (new Date(transaction.date).getTime()))));
-
+    const collectionsFilttered = transactions.filter((transaction) =>  transaction.type === type);
+    if(collectionsFilttered.length === 0){
+      return 0;
+    }
+    const lastTransaction = new Date(Math.max.apply(Math, collectionsFilttered     
+      .map((transaction) => (new Date(transaction.date).getTime()))));      
       return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR', {
         month: 'long',
       })}`
   }, []);
 
   const loadTransactions = async() => {
-    const response = await AsyncStorage.getItem(dataKey.key);
+    const response = await AsyncStorage.getItem(`${dataKey.key}${user.id}`);
     const transactions = response ? JSON.parse(response) : [];
     let incomeTotal = 0;
     let expenseTotal = 0;
@@ -93,7 +95,10 @@ export function Dashboard(){
     setTransactions(transactionsFormated);
     const lastTransactionsIncomeDate = getLastTransaction(transactions, 'positive');
     const lastTransactionExpenseDate = getLastTransaction(transactions, 'negative');
-    const intervalDate = `01 a ${lastTransactionsIncomeDate}`
+
+    const intervalDate = lastTransactionExpenseDate === 0 
+    ? 'Não há transações' 
+    :`01 a ${lastTransactionsIncomeDate}`;
 
     const total = incomeTotal - expenseTotal;
     setCardsTotal({
@@ -102,14 +107,18 @@ export function Dashboard(){
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `Última entrada dia ${lastTransactionsIncomeDate}`,
+        lastTransaction: lastTransactionsIncomeDate === 0 
+        ? 'Não há transações' 
+        : `Última entrada dia ${lastTransactionsIncomeDate}`,
       }, 
       expense: {
         amount: expenseTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `Última saída dia ${lastTransactionExpenseDate}`,
+        lastTransaction: lastTransactionExpenseDate === 0 
+        ? 'Não há transações'  
+        : `Última saída dia ${lastTransactionExpenseDate}`,
         
       },
       total: {

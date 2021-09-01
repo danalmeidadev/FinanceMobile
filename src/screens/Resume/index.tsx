@@ -22,6 +22,7 @@ import {
   MonthSelectIcon,
   Month,
       } from './styles';
+import { useAuth } from '~/hooks';
 
 interface TransactionsData {
   type: 'positive' | 'negative';
@@ -41,6 +42,7 @@ interface CategoryDate {
 }
 
 export function Resume(){
+  const {user} = useAuth();
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -56,7 +58,7 @@ export function Resume(){
 
   const loadData = useCallback(async() => {
     setLoading(true);
-    const response = await AsyncStorage.getItem(dataKey.key);
+    const response = await AsyncStorage.getItem(`${dataKey.key}${user.id}`);
     const responseFormatted = response ? JSON.parse(response) : [];
 
     const expensives = responseFormatted

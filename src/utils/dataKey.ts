@@ -1,4 +1,4 @@
 export const dataKey = {
-  key: '@finance:transactions',
+  key: '@finance:transactions_user:',
   user: '@finance:user'
 }

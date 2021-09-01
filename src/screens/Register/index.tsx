@@ -13,6 +13,7 @@ import { SelectCategory } from '~/components/SelectCategory';
 import { CategorySelect } from '../CategorySelect';
 import {Container, Header, Title, Fields, Form, WrappperTransactions} from './styles';
 import { dataKey } from '~/utils/dataKey';
+import { useAuth } from '~/hooks';
 
 interface FormData {
   name: string;
@@ -33,6 +34,7 @@ const schema = Yup.object().shape({
 })
 
 export function Register(){
+  const {user} = useAuth();
   const {navigate} = useNavigation<NavigationProps>();
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -69,10 +71,10 @@ export function Register(){
     }
 
     try {
-      const data = await AsyncStorage.getItem(dataKey.key);
+      const data = await AsyncStorage.getItem(`${dataKey.key}${user.id}`);
       const currentData = data ? JSON.parse(data) : [];
       const dataFormated = [...currentData, newTransaction]
-      await AsyncStorage.setItem(dataKey.key, JSON.stringify(dataFormated));
+      await AsyncStorage.setItem(`${dataKey.key}${user.id}`, JSON.stringify(dataFormated));
       reset();
       setTransactionType('');
       setCategory(
